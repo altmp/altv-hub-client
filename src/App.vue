@@ -27,7 +27,7 @@ export default {
     },
     data() {
         return {
-            postResourceUrl: `https://github.com/Stuyk/altv-hub/pulls`
+            postResourceUrl: `https://github.com/altmp/altv-hub/pulls`
         };
     },
     methods: {
