@@ -1,5 +1,8 @@
 <template>
     <div class="navigation" ref="navbar">
+        <a class="logo" href="https://altv.mp/" target="_blank">
+            <img src="../assets/logo.svg" />
+        </a>
         <input
             type="text"
             placeholder="Search for resources..."

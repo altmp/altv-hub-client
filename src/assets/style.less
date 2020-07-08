@@ -25,11 +25,11 @@ html {
 body {
     padding: 0;
     margin: 0;
-    background: rgb(20, 20, 20);
     color: white;
     font-size: 16px !important;
     font-family: @Roboto;
     box-sizing: border-box;
+    background: url('background.png') no-repeat 50% / cover;
 }
 
 * {
@@ -45,11 +45,23 @@ body {
     align-content: center;
     box-sizing: border-box;
     width: 100%;
-    background: rgb(30, 30, 30);
+    background: rgba(34, 34, 34, 0.7);
+    border-bottom: 1px solid hsla(0, 0%, 93.3%, 0.02);
     height: auto;
     color: white;
     box-sizing: border-box;
-    padding: 24px;
+    padding: 21px 30px 20px;
+
+    .logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 24px;
+
+        img {
+            width: 40px;
+        }
+    }
 
     input {
         padding: 12px;
@@ -159,7 +171,7 @@ body {
             flex-direction: column;
             overflow: hidden;
             max-height: 450px;
-            background: rgb(30, 30, 30);
+            background: rgb(60, 60, 60);
             box-sizing: border-box;
             border-radius: 6px;
             user-select: none;
@@ -203,12 +215,7 @@ body {
                     align-items: center;
                     height: 100%;
                     background: rgb(53, 53, 53);
-                    background: linear-gradient(
-                        270deg,
-                        rgba(53, 53, 53, 1) 0%,
-                        rgba(53, 53, 53, 1) 40%,
-                        rgba(255, 255, 255, 0) 100%
-                    );
+                    background: linear-gradient(270deg, #505050 0%, #505050 40%, rgba(255, 255, 255, 0) 100%);
                     z-index: 99;
 
                     .stars {
@@ -236,13 +243,8 @@ body {
                 }
 
                 .starInfo {
-                    background: rgb(93, 93, 93);
-                    background: linear-gradient(
-                        270deg,
-                        rgba(93, 93, 93, 1) 0%,
-                        rgba(93, 93, 93, 1) 40%,
-                        rgba(255, 255, 255, 0) 100%
-                    );
+                    background: #5D5D5D;
+                    background: linear-gradient(270deg, #5d5d5d 0%, #5d5d5d 40%, rgba(255, 255, 255, 0) 100%);
                 }
 
                 svg {
