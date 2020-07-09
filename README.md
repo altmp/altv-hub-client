@@ -28,6 +28,8 @@ That or run the `deploy.sh` if you're on a Linux based machine.
 ```sh
 npm run build
 
+# Copy CNAME to dist directory.
+
 cd dist
 
 git init
