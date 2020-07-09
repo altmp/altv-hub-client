@@ -12,59 +12,39 @@
         <div class="buttons">
             <button :class="currentSort.by == 'stars' ? 'active' : ''" @click="sort('stars')">
                 <svg
-                    v-if="currentSort.asc"
                     version="1"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 48 48"
                     enable-background="new 0 0 48 48"
                 >
-                    <rect x="6" y="6" fill="#FFFFFF" width="4" height="4" />
-                    <rect x="6" y="14" fill="#FFFFFF" width="12" height="4" />
-                    <rect x="6" y="22" fill="#FFFFFF" width="20" height="4" />
-                    <rect x="6" y="30" fill="#FFFFFF" width="28" height="4" />
-                    <rect x="6" y="38" fill="#FFFFFF" width="36" height="4" />
-                </svg>
-                <svg
-                    v-if="!currentSort.asc"
-                    version="1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 48 48"
-                    enable-background="new 0 0 48 48"
-                >
-                    <rect x="6" y="38" fill="#FFFFFF" width="4" height="4" />
-                    <rect x="6" y="30" fill="#FFFFFF" width="12" height="4" />
-                    <rect x="6" y="22" fill="#FFFFFF" width="20" height="4" />
-                    <rect x="6" y="14" fill="#FFFFFF" width="28" height="4" />
-                    <rect x="6" y="6" fill="#FFFFFF" width="36" height="4" />
+                    <rect 
+                        v-for="(width, i) in arr = [6, 14, 22, 30, 38]"
+                        :key="width" 
+                        :y="currentSort.asc ? width : arr.reverse()[i]"
+                        :width="width - 2" 
+                        x="6" 
+                        fill="#FFFFFF" 
+                        height="4" 
+                    />
                 </svg>
                 Stars
             </button>
             <button :class="currentSort.by == 'updated' ? 'active' : ''" @click="sort('updated')">
                 <svg
-                    v-if="currentSort.asc"
                     version="1"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 48 48"
                     enable-background="new 0 0 48 48"
                 >
-                    <rect x="6" y="6" fill="#FFFFFF" width="4" height="4" />
-                    <rect x="6" y="14" fill="#FFFFFF" width="12" height="4" />
-                    <rect x="6" y="22" fill="#FFFFFF" width="20" height="4" />
-                    <rect x="6" y="30" fill="#FFFFFF" width="28" height="4" />
-                    <rect x="6" y="38" fill="#FFFFFF" width="36" height="4" />
-                </svg>
-                <svg
-                    v-if="!currentSort.asc"
-                    version="1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 48 48"
-                    enable-background="new 0 0 48 48"
-                >
-                    <rect x="6" y="38" fill="#FFFFFF" width="4" height="4" />
-                    <rect x="6" y="30" fill="#FFFFFF" width="12" height="4" />
-                    <rect x="6" y="22" fill="#FFFFFF" width="20" height="4" />
-                    <rect x="6" y="14" fill="#FFFFFF" width="28" height="4" />
-                    <rect x="6" y="6" fill="#FFFFFF" width="36" height="4" />
+                    <rect 
+                        v-for="(width, i) in arr = [6, 14, 22, 30, 38]"
+                        :key="width" 
+                        :y="currentSort.asc ? width : arr.reverse()[i]"
+                        :width="width - 2" 
+                        x="6" 
+                        fill="#FFFFFF" 
+                        height="4" 
+                    />
                 </svg>
                 Date
             </button>
