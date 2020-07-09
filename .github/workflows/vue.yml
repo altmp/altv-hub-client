@@ -1,0 +1,29 @@
+name: Generate Vue
+on:
+    create:
+        tags:
+            - v*
+
+jobs:
+    gen-docs:
+        name: Generate Vue
+        runs-on: ubuntu-latest
+        steps:
+            - name: Set up Node.js
+              uses: actions/setup-node@v1
+              with:
+                  node-version: 13.x
+            - name: Checkout repository
+              uses: actions/checkout@v1
+            - name: Install deps
+              run: npm install
+            - name: Run script
+              run: npm run build
+            - name: Deploy
+              uses: altmp/altv-hub-client@releases/v1
+              with:
+                  target_branch: gh-pages
+                  build_dir: dist
+              env:
+                  GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
+                  NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
