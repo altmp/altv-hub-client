@@ -1,3 +1,3 @@
 module.exports = {
-    publicPath: '/altv-hub-client/'
+    publicPath: process.env.NODE_ENV === 'production' ? '/altv-hub-client/' : '/'
 };
