@@ -30,6 +30,7 @@ body {
     font-family: @Roboto;
     box-sizing: border-box;
     background: url('background.png') no-repeat 50% / cover;
+    background-attachment: fixed;
 }
 
 * {
@@ -243,7 +244,7 @@ body {
                 }
 
                 .starInfo {
-                    background: #5D5D5D;
+                    background: #5d5d5d;
                     background: linear-gradient(270deg, #5d5d5d 0%, #5d5d5d 40%, rgba(255, 255, 255, 0) 100%);
                 }
 
@@ -295,11 +296,13 @@ body {
 .controls {
     display: flex;
     position: fixed;
-    bottom: 12px;
-    right: 12px;
+    bottom: 0;
+    right: 0;
+    padding: 12px 12px 12px 0;
     z-index: 199;
     justify-content: space-between;
     left: 0px;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.35) 0%, rgba(255, 255, 255, 0) 100%);
 
     button {
         min-height: 24px;
