@@ -13,7 +13,7 @@ cd dist
 # echo 'www.example.com' > CNAME
 
 git init
-git add ./dist/* --force
+git add -A
 git commit -m 'deploy'
 
 git push -f git@github.com:altmp/altv-hub-client.git master:gh-pages
