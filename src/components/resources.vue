@@ -144,6 +144,7 @@ export default {
                 resources: sortedResources
             };
 
+            this.resources = sortedResources;
             localStorage.setItem('resources', JSON.stringify(storageObject));
         }
     },
