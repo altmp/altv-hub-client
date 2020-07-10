@@ -26,6 +26,6 @@ jobs:
                   git init
                   git config --local user.email "action@github.com"
                   git config --local user.name "GitHub Action"
-                  git add ./dist -f
+                  git add -A
                   git commit -m "Redeploy Website" -a
                   git push -f git@github.com:altmp/altv-hub-client.git master:gh-pages
