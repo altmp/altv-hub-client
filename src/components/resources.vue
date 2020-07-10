@@ -113,19 +113,11 @@ export default {
 
             return description.slice(0, 128) + '...';
         },
-        async getRepoInfo(repositoryUrl) {
-            const path = repositoryUrl.replace('https://github.com/', '');
-            const data = await getRequest(`https://api.github.com/repos/${path}`);
+        async getResourceList() {
+            const data = await getRequest(
+                `https://raw.githubusercontent.com/altmp/altv-hub/master/dist/resources.json`
+            );
             return data;
-        },
-        async getAuthorRawJSON(jsonPath) {
-            const jsonData = await getRequest(jsonPath);
-            return jsonData;
-        },
-        async getAuthorRepositories(authorPath) {
-            const authorRepository = `https://api.github.com/repos/${this.repository}/${authorPath}`;
-            const authorRepos = await getRequest(authorRepository);
-            return authorRepos;
         },
         async getResources() {
             let resourcesData;
@@ -141,42 +133,10 @@ export default {
                 return;
             }
 
-            const authors = await getRequest(`https://api.github.com/repos/${this.repository}/resources`);
-            if (!Array.isArray(authors)) {
-                console.error(`Could not fetch repositories at this time.`);
-                return;
-            }
-
-            let resources = [];
-
-            for (let i = 0; i < authors.length; i++) {
-                const authorRepos = await this.getAuthorRepositories(authors[i].path);
-                const author = authors[i].name;
-
-                for (let j = 0; j < authorRepos.length; j++) {
-                    const json = await this.getAuthorRawJSON(authorRepos[j].download_url);
-                    const repoInfo = await this.getRepoInfo(json.url);
-
-                    if (!(repoInfo.message && repoInfo.message == 'Not Found')) {
-                        const conformedData = {
-                            ...authorRepos[i],
-                            ...json,
-                            author,
-                            stars: repoInfo.stargazers_count,
-                            updated: repoInfo.updated_at,
-                            creation: repoInfo.created_at
-                        };
-
-                        resources.push(conformedData);
-                    }
-                }
-            }
-
+            const resources = await this.getResourceList();
             const sortedResources = resources.sort((a, b) => {
                 return b.stars - a.stars;
             });
-
-            this.resources = sortedResources;
 
             const refreshTime = Date.now() + 60000 * 5;
             const storageObject = {
