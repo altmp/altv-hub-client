@@ -19,14 +19,11 @@ jobs:
               run: npm install
             - name: Build VUE Files
               run: npm run build
-            - name: Commit files
-              run: |
-                  cd dist
-                  echo "hub.altv.mp" > CNAME
-                  git init
-                  git config --local user.email "{{ secrets.GH_MAIL }}"
-                  git config --local user.name "{{ secrets.GH_USER }}"
-                  git remote add gh-token "https://${{ secrets.GITHUB_TOKEN }}@github.com/:user/:repo.git"
-                  git add -A
-                  git commit -m "Redeploy Website" -a
-                  git push -f git@github.com:altmp/altv-hub-client.git master:gh-pages
+            - name: Build VUE Files
+              run: cp CNAME ./dist/CNAME
+            - name: Deploy
+              uses: JamesIves/github-pages-deploy-action@releases/v3
+              with:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  BRANCH: gh-pages # The branch the action should deploy to.
+                  FOLDER: dist # The folder the action should deploy.
