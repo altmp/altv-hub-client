@@ -24,8 +24,9 @@ jobs:
                   cd dist
                   echo "hub.altv.mp" > CNAME
                   git init
-                  git config --local user.email "action@github.com"
-                  git config --local user.name "GitHub Action"
+                  git config --local user.email "{{ secrets.GH_MAIL }}"
+                  git config --local user.name "{{ secrets.GH_USER }}"
+                  git remote add gh-token "https://${{ secrets.GITHUB_TOKEN }}@github.com/:user/:repo.git"
                   git add -A
                   git commit -m "Redeploy Website" -a
                   git push -f git@github.com:altmp/altv-hub-client.git master:gh-pages
