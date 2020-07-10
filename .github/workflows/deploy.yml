@@ -15,24 +15,21 @@ jobs:
                   node-version: 13
             - name: Install Vue CLI
               run: npm install -g @vue/cli
-            - name: Create a file.
-              run: git pull origin master
-            - name: Create a file.
+            - name: Install NPM Packages.
               run: npm install
-            - name: Build Files
+            - name: Build VUE Files
               run: npm run build
             - name: Commit files
               run: |
-                  cd dist
                   echo "hub.altv.mp" > CNAME
                   git init
                   git config --local user.email "action@github.com"
                   git config --local user.name "GitHub Action"
-                  git add -A
+                  git add ./dist
                   git commit -m "Redeploy Website" -a
-                  git push -f git@github.com:altmp/altv-hub-client.git master:gh-pages
-                  ls
             - name: Push changes
               uses: ad-m/github-push-action@master
               with:
                   github_token: ${{ secrets.GITHUB_TOKEN }}
+                  directory: './dist'
+                  repository: '[user]/gh-pages'
