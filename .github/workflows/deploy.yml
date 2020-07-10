@@ -21,15 +21,11 @@ jobs:
               run: npm run build
             - name: Commit files
               run: |
+                  cd dist
                   echo "hub.altv.mp" > CNAME
                   git init
                   git config --local user.email "action@github.com"
                   git config --local user.name "GitHub Action"
                   git add ./dist -f
                   git commit -m "Redeploy Website" -a
-            - name: Push changes
-              uses: ad-m/github-push-action@master
-              with:
-                  github_token: ${{ secrets.GITHUB_TOKEN }}
-                  directory: './dist'
-                  branch: 'gh-pages'
+                  git push -f git@github.com:altmp/altv-hub-client.git master:gh-pages
