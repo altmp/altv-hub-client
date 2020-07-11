@@ -17,8 +17,6 @@
     </div>
 </template>
 
-<style src="./assets/style.less" lang="less"></style>
-
 <script>
 import Navigation from '@/components/navigation.vue';
 import { postRequest } from '@/utility/fetch.js';
