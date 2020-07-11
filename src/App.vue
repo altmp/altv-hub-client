@@ -45,7 +45,6 @@ export default {
         prevPage() {
             this.$root.$emit('page:Prev');
         }
-    },
-    mounted() {}
+    }
 };
 </script>
