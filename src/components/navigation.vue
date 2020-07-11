@@ -66,7 +66,6 @@ export default {
             }
         };
     },
-    computed: {},
     methods: {
         isActive(name) {
             return this.activePath === name ? { active: true } : {};
