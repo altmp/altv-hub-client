@@ -9,12 +9,13 @@
                 <button @click="prevPage">Prev</button>
                 <button @click="nextPage">Next</button>
             </div>
-            <button @click="postResource">Post Resource</button>
+            <div class="postControls">
+                <button @click="tutorialPost">How To Post?</button>
+                <button @click="postResource">Post Resource</button>
+            </div>
         </div>
     </div>
 </template>
-
-<style src="./assets/style.less" lang="less"></style>
 
 <script>
 import Navigation from '@/components/navigation.vue';
@@ -27,12 +28,16 @@ export default {
     },
     data() {
         return {
-            postResourceUrl: `https://github.com/altmp/altv-hub/pulls`
+            postResourceUrl: `https://github.com/altmp/altv-hub/pulls`,
+            postTutorialUrl: `https://www.youtube.com/watch?v=g2HTRdir6qo`
         };
     },
     methods: {
         postResource() {
             window.open(this.postResourceUrl);
+        },
+        tutorialPost() {
+            window.open(this.postTutorialUrl);
         },
         nextPage() {
             this.$root.$emit('page:Next');
@@ -40,7 +45,6 @@ export default {
         prevPage() {
             this.$root.$emit('page:Prev');
         }
-    },
-    mounted() {}
+    }
 };
 </script>

@@ -1,47 +1,23 @@
 <template>
     <div class="resources" v-if="resources.length >= 1">
-        <div
-            v-for="(resource, index) in paginatedResources[currentPage]"
-            :key="index"
-            class="resource"
-            v-on:click="open(resource.url)"
-        >
-            <div class="info">
-                <div class="title">{{ resource.title }}</div>
-                <div class="author">{{ resource.author }}</div>
-                <div class="starInfo">
-                    <div class="stars">{{ resource.stars }}</div>
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        width="24"
-                    >
-                        <path d="M0 0h24v24H0z" fill="none" />
-                        <path
-                            fill="#191919"
-                            d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
-                        />
-                    </svg>
-                </div>
-            </div>
-
-            <div class="description">{{ trimDescription(resource.description) }}</div>
-            <div class="image cover" :style="`background-image: url('${resource.cover}');`" />
-        </div>
+        <resource-card
+            v-for="resource in paginatedResources[currentPage]"
+            :key="resource.url"
+            :resource="resource"
+        />
     </div>
-    <div v-else>
-        <div class="lds-heart">
-            <div></div>
-        </div>
+    <div v-else class="lds-heart">
+        <div></div>
     </div>
 </template>
 
 <script>
 import { postRequest, getRequest } from '@/utility/fetch.js';
+import ResourceCard from '@/components/resource-card.vue';
 
 export default {
     name: 'Resources',
+    components: { ResourceCard },
     data() {
         return {
             searchQuery: '',
@@ -98,34 +74,17 @@ export default {
         }
     },
     methods: {
-        open(url) {
-            window.open(url);
-        },
         array_chunk(array, items) {
             return Array.from(Array(Math.ceil(array.length / items)), (_, i) =>
                 array.slice(i * items, i * items + items)
             );
         },
-        trimDescription(description) {
-            if (description.length <= 128) {
-                return description;
-            }
 
-            return description.slice(0, 128) + '...';
-        },
-        async getRepoInfo(repositoryUrl) {
-            const path = repositoryUrl.replace('https://github.com/', '');
-            const data = await getRequest(`https://api.github.com/repos/${path}`);
+        async getResourceList() {
+            const data = await getRequest(
+                `https://raw.githubusercontent.com/altmp/altv-hub/master/dist/resources.json`
+            );
             return data;
-        },
-        async getAuthorRawJSON(jsonPath) {
-            const jsonData = await getRequest(jsonPath);
-            return jsonData;
-        },
-        async getAuthorRepositories(authorPath) {
-            const authorRepository = `https://api.github.com/repos/${this.repository}/${authorPath}`;
-            const authorRepos = await getRequest(authorRepository);
-            return authorRepos;
         },
         async getResources() {
             let resourcesData;
@@ -141,42 +100,10 @@ export default {
                 return;
             }
 
-            const authors = await getRequest(`https://api.github.com/repos/${this.repository}/resources`);
-            if (!Array.isArray(authors)) {
-                console.error(`Could not fetch repositories at this time.`);
-                return;
-            }
-
-            let resources = [];
-
-            for (let i = 0; i < authors.length; i++) {
-                const authorRepos = await this.getAuthorRepositories(authors[i].path);
-                const author = authors[i].name;
-
-                for (let j = 0; j < authorRepos.length; j++) {
-                    const json = await this.getAuthorRawJSON(authorRepos[j].download_url);
-                    const repoInfo = await this.getRepoInfo(json.url);
-
-                    if (!(repoInfo.message && repoInfo.message == 'Not Found')) {
-                        const conformedData = {
-                            ...authorRepos[i],
-                            ...json,
-                            author,
-                            stars: repoInfo.stargazers_count,
-                            updated: repoInfo.updated_at,
-                            creation: repoInfo.created_at
-                        };
-
-                        resources.push(conformedData);
-                    }
-                }
-            }
-
+            const resources = await this.getResourceList();
             const sortedResources = resources.sort((a, b) => {
                 return b.stars - a.stars;
             });
-
-            this.resources = sortedResources;
 
             const refreshTime = Date.now() + 60000 * 5;
             const storageObject = {
@@ -184,6 +111,7 @@ export default {
                 resources: sortedResources
             };
 
+            this.resources = sortedResources;
             localStorage.setItem('resources', JSON.stringify(storageObject));
         }
     },
