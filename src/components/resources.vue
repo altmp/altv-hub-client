@@ -1,10 +1,6 @@
 <template>
     <div class="resources" v-if="resources.length >= 1">
-        <resource-card
-            v-for="resource in paginatedResources[currentPage]"
-            :key="resource.url"
-            :resource="resource"
-        />
+        <resource-card v-for="resource in paginatedResources" :key="resource.url" :resource="resource" />
     </div>
     <div v-else class="lds-heart">
         <div></div>
@@ -28,7 +24,7 @@ export default {
             repository: 'altmp/altv-hub/contents',
             resources: [],
             currentPage: 0,
-            perPage: 20
+            perPage: 12
         };
     },
     computed: {
@@ -70,7 +66,14 @@ export default {
             return sortedResources;
         },
         paginatedResources() {
-            return this.array_chunk(this.formattedResources, this.perPage);
+            let chunkedResources = this.array_chunk(this.formattedResources, this.perPage);
+            let resources = [];
+
+            for (let page = 0; page <= this.currentPage; page++) {
+                resources = resources.concat(chunkedResources[page]);
+            }
+
+            return resources;
         }
     },
     methods: {
@@ -113,31 +116,32 @@ export default {
 
             this.resources = sortedResources;
             localStorage.setItem('resources', JSON.stringify(storageObject));
+        },
+        onScroll() {
+            let bottomOfWindow =
+                Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) +
+                    window.innerHeight ===
+                document.documentElement.offsetHeight;
+
+            if (bottomOfWindow) {
+                this.currentPage = this.currentPage + 1;
+                let chunkedResources = this.array_chunk(this.formattedResources, this.perPage);
+
+                if (this.currentPage > chunkedResources.length - 1) {
+                    this.currentPage = chunkedResources.length - 1;
+                }
+            }
         }
     },
     mounted() {
+        window.addEventListener('scroll', this.onScroll);
+
         this.$root.$on('search', query => {
             this.searchQuery = query;
         });
 
         this.$root.$on('sort', sort => {
             this.sort = sort;
-        });
-
-        this.$root.$on('page:Next', () => {
-            this.currentPage = this.currentPage + 1;
-
-            if (this.currentPage > this.paginatedResources.length - 1) {
-                this.currentPage = this.paginatedResources.length - 1;
-            }
-        });
-
-        this.$root.$on('page:Prev', () => {
-            this.currentPage = this.currentPage - 1;
-
-            if (this.currentPage < 0) {
-                this.currentPage = 0;
-            }
         });
 
         this.getResources();
