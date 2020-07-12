@@ -3,12 +3,7 @@
         <a class="logo" href="https://altv.mp/" target="_blank">
             <img src="../assets/logo.svg" />
         </a>
-        <input
-            type="text"
-            placeholder="Search for resources..."
-            v-model="searchInput"
-            @keydown="search"
-        />
+        <input type="text" placeholder="Search for resources..." v-model="searchInput" />
         <div class="buttons">
             <button :class="currentSort.by == 'stars' ? 'active' : ''" @click="sort('stars')">
                 <svg
@@ -17,14 +12,14 @@
                     viewBox="0 0 48 48"
                     enable-background="new 0 0 48 48"
                 >
-                    <rect 
-                        v-for="(width, i) in arr = [6, 14, 22, 30, 38]"
-                        :key="width" 
+                    <rect
+                        v-for="(width, i) in (arr = [6, 14, 22, 30, 38])"
+                        :key="width"
                         :y="currentSort.asc ? width : arr.reverse()[i]"
-                        :width="width - 2" 
-                        x="6" 
-                        fill="#FFFFFF" 
-                        height="4" 
+                        :width="width - 2"
+                        x="6"
+                        fill="#FFFFFF"
+                        height="4"
                     />
                 </svg>
                 Stars
@@ -36,14 +31,14 @@
                     viewBox="0 0 48 48"
                     enable-background="new 0 0 48 48"
                 >
-                    <rect 
-                        v-for="(width, i) in arr = [6, 14, 22, 30, 38]"
-                        :key="width" 
+                    <rect
+                        v-for="(width, i) in (arr = [6, 14, 22, 30, 38])"
+                        :key="width"
                         :y="currentSort.asc ? width : arr.reverse()[i]"
-                        :width="width - 2" 
-                        x="6" 
-                        fill="#FFFFFF" 
-                        height="4" 
+                        :width="width - 2"
+                        x="6"
+                        fill="#FFFFFF"
+                        height="4"
                     />
                 </svg>
                 Date
@@ -91,6 +86,11 @@ export default {
         this.$on('router:SetLink', linkName => {
             this.setLink({ id: linkName });
         });
+    },
+    watch: {
+        searchInput() {
+            this.search();
+        }
     }
 };
 </script>
