@@ -5,10 +5,6 @@
             <router-view />
         </div>
         <div class="controls">
-            <div class="pageControls">
-                <button @click="prevPage">Prev</button>
-                <button @click="nextPage">Next</button>
-            </div>
             <div class="postControls">
                 <button @click="tutorialPost">How To Post?</button>
                 <button @click="postResource">Post Resource</button>
