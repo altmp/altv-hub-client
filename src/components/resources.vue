@@ -1,6 +1,11 @@
 <template>
     <div class="resources" v-if="resources.length >= 1">
-        <resource-card v-for="resource in paginatedResources" :key="resource.url" :resource="resource" />
+        <resource-card
+            v-if="resource"
+            v-for="resource in paginatedResources"
+            :key="resource.url"
+            :resource="resource"
+        />
     </div>
     <div v-else class="lds-heart">
         <div></div>
@@ -118,12 +123,7 @@ export default {
             localStorage.setItem('resources', JSON.stringify(storageObject));
         },
         onScroll() {
-            let bottomOfWindow =
-                Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) +
-                    window.innerHeight ===
-                document.documentElement.offsetHeight;
-
-            if (bottomOfWindow) {
+            if (window.innerHeight + window.pageYOffset >= document.body.scrollHeight) {
                 this.currentPage = this.currentPage + 1;
                 let chunkedResources = this.array_chunk(this.formattedResources, this.perPage);
 
