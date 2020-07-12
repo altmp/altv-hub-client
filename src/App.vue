@@ -34,12 +34,6 @@ export default {
         },
         tutorialPost() {
             window.open(this.postTutorialUrl);
-        },
-        nextPage() {
-            this.$root.$emit('page:Next');
-        },
-        prevPage() {
-            this.$root.$emit('page:Prev');
         }
     }
 };

@@ -144,22 +144,6 @@ export default {
             this.sort = sort;
         });
 
-        this.$root.$on('page:Next', () => {
-            this.currentPage = this.currentPage + 1;
-
-            if (this.currentPage > this.paginatedResources.length - 1) {
-                this.currentPage = this.paginatedResources.length - 1;
-            }
-        });
-
-        this.$root.$on('page:Prev', () => {
-            this.currentPage = this.currentPage - 1;
-
-            if (this.currentPage < 0) {
-                this.currentPage = 0;
-            }
-        });
-
         this.getResources();
     }
 };
