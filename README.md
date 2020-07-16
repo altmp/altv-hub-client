@@ -5,6 +5,7 @@ Used to display resources from the [https://github.com/altmp/altv-hub](https://g
 ## Project setup
 
 ```sh
+npm install -g @vue/cli
 npm install
 ```
 

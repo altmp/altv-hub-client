@@ -1,7 +1,6 @@
 <template>
     <div class="resources" v-if="resources.length >= 1">
         <resource-card
-            v-if="resource"
             v-for="resource in paginatedResources"
             :key="resource.url"
             :resource="resource"
@@ -29,7 +28,7 @@ export default {
             repository: 'altmp/altv-hub/contents',
             resources: [],
             currentPage: 0,
-            perPage: 12
+            perPage: 30
         };
     },
     computed: {
