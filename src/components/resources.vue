@@ -86,7 +86,6 @@ export default {
                 array.slice(i * items, i * items + items)
             );
         },
-
         async getResourceList() {
             const data = await getRequest(
                 `https://raw.githubusercontent.com/altmp/altv-hub/master/dist/resources.json`
