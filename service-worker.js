@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "precache-manifest.e278dced466d304cc6d7047c14d29894.js"
+  "precache-manifest.92916c6f6a934e633404cb2a2fcb390b.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "altvhub"});
