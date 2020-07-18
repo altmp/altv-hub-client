@@ -2,6 +2,8 @@
     <div id="app">
         <navigation></navigation>
         <div class="container">
+            <sidebar></sidebar>
+
             <router-view />
         </div>
         <div class="controls">
@@ -15,12 +17,15 @@
 
 <script>
 import Navigation from '@/components/navigation.vue';
+import Sidebar from '@/components/sidebar.vue';
+
 import { postRequest } from '@/utility/fetch.js';
 
 export default {
     name: 'app',
     components: {
-        Navigation
+        Navigation,
+        Sidebar
     },
     data() {
         return {
