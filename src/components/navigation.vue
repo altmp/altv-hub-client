@@ -92,9 +92,15 @@ export default {
     watch: {
         searchInput() {
             this.search();
-            this.searchInput.length !== 0
-                ? this.$router.push({ query: Object.assign({}, this.$route.query, { q: this.searchInput }) })
-                : this.$router.push({ query: Object.assign({}, {}) });
+
+            // we clear the query if input is clean too
+            const query =
+                this.searchInput.length !== 0
+                    ? Object.assign({}, this.$route.query, { q: this.searchInput })
+                    : Object.assign({}, {});
+
+            // it gives navigation duplication error when routing to the same query twice at initial load with search string included in the url
+            if (this.$route.query.q !== query.q) this.$router.push({ query });
         }
     }
 };
