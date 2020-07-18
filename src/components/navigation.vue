@@ -83,6 +83,8 @@ export default {
         }
     },
     mounted() {
+        this.searchInput = this.$route.query.q || '';
+
         this.$on('router:SetLink', linkName => {
             this.setLink({ id: linkName });
         });
@@ -90,6 +92,9 @@ export default {
     watch: {
         searchInput() {
             this.search();
+            this.searchInput.length !== 0
+                ? this.$router.push({ query: Object.assign({}, this.$route.query, { q: this.searchInput }) })
+                : this.$router.push({ query: Object.assign({}, {}) });
         }
     }
 };
