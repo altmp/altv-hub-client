@@ -6,6 +6,7 @@
                 <div class="stack">
                     <div class="title">{{ trimTitle(resource.title) }}</div>
                     <div class="author">{{ resource.author }}</div>
+                    <div class="tags">{{ formatTags(resource.tags) }}</div>
                 </div>
                 <div class="starInfo">
                     <div class="stars">{{ resource.stars }}</div>
@@ -61,6 +62,13 @@ export default {
             }
 
             return decor;
+        },
+        formatTags(tags) {
+            // show only 6? tags
+            return tags
+                .slice(0, 6)
+                .map(_tag => `#${_tag}`)
+                .join(' ');
         }
     },
     mounted() {
