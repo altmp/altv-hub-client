@@ -6,8 +6,10 @@
             :resource="resource"
         />
     </div>
-    <div v-else>
-        <p>There are no resources like that.</p>
+    <div v-else style="margin: 0 auto;">
+        <div class="lds-heart">
+            <div></div>
+        </div>
     </div>
 </template>
 
