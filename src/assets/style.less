@@ -29,7 +29,7 @@ body {
     box-sizing: border-box;
     background: @darkest;
 }
-
+            
 * {
     box-sizing: border-box;
 }
@@ -55,7 +55,7 @@ body {
     right: 0;
     z-index: 100;
     height: 85px;
-
+    
     .logo {
         display: flex;
         justify-content: center;
@@ -87,7 +87,7 @@ body {
 
     .buttons {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         grid-gap: 12px;
 
         button {
@@ -138,8 +138,7 @@ body {
 
 .container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     padding: 12px;
     padding-top: 97px;
     padding-bottom: 97px;
@@ -147,6 +146,9 @@ body {
     width: 100%;
     max-width: 1900px;
     margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
 
     p {
         padding: 0;
@@ -160,10 +162,39 @@ body {
         box-sizing: border-box;
     }
 
+    .sidebar {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 0;
+        flex-shrink: 1;
+        flex-basis: 15%;
+        background:rgba(64, 64, 64, 0.38);
+        box-sizing: border-box;
+        user-select: none;
+        margin-right: 12px;
+        align-self: flex-start;
+        padding: 1.5rem;
+        a, a:visited {
+            transition: linear .15s;
+
+            text-decoration: none; /* no underline */
+            color: @lightergray;
+        }
+        a:hover {
+            color: @whitecontrast;
+        }
+        @media only screen and (max-width: 720px) {
+            display: none;
+        }
+
+    }
+
     .resources {
         display: flex;
         flex-direction: column;
-        width: 100%;
+        flex-basis: 100%;
+        flex-grow: 1;
+        flex-shrink: 1;
 
         .resource {
             display: flex;
@@ -210,6 +241,12 @@ body {
                             flex-grow: 1;
                             padding-top: 5px;
                             padding-right: 12px;
+                        }
+                        
+                        .tags {
+                            color: @lightergray;
+                            font-size: 12px;
+                            
                         }
 
                         .title {

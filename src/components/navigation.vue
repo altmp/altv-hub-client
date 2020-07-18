@@ -5,6 +5,15 @@
         </a>
         <input type="text" placeholder="Search for resources..." v-model="searchInput" />
         <div class="buttons">
+            <button class="button">
+                <a href="/" alt="Home">
+                    <img
+                        style="height: 24px; padding-left: .3rem"
+                        src="../assets/home.svg"
+                        alt="Home"
+                    />
+                </a>
+            </button>
             <button :class="currentSort.by == 'stars' ? 'active' : ''" @click="sort('stars')">
                 <svg
                     version="1"
@@ -83,6 +92,8 @@ export default {
         }
     },
     mounted() {
+        this.searchInput = this.$route.query.q || '';
+
         this.$on('router:SetLink', linkName => {
             this.setLink({ id: linkName });
         });
@@ -90,6 +101,15 @@ export default {
     watch: {
         searchInput() {
             this.search();
+
+            // we clear the query if input is clean too
+            const query =
+                this.searchInput.length !== 0
+                    ? Object.assign({}, this.$route.query, { q: this.searchInput })
+                    : Object.assign({}, {});
+
+            // it gives navigation duplication error when routing to the same query twice at initial load with search string included in the url
+            if (this.$route.query.q !== query.q) this.$router.push({ query });
         }
     }
 };

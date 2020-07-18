@@ -1,13 +1,15 @@
 <template>
-    <div class="resources" v-if="resources.length >= 1">
+    <div class="resources" v-if="paginatedResources.length >= 1">
         <resource-card
             v-for="resource in paginatedResources"
             :key="resource.url"
             :resource="resource"
         />
     </div>
-    <div v-else class="lds-heart">
-        <div></div>
+    <div v-else style="margin: 0 auto;">
+        <div class="lds-heart">
+            <div></div>
+        </div>
     </div>
 </template>
 
@@ -70,6 +72,8 @@ export default {
             return sortedResources;
         },
         paginatedResources() {
+            if (this.formattedResources.length === 0) return [];
+
             let chunkedResources = this.array_chunk(this.formattedResources, this.perPage);
             let resources = [];
 
