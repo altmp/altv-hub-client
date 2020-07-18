@@ -7,7 +7,11 @@
         <div class="buttons">
             <button class="button">
                 <a href="/" alt="Home">
-                    <img style="height: 24px;" src="../assets/home.svg" alt="Home" />
+                    <img
+                        style="height: 24px; padding-left: .3rem"
+                        src="../assets/home.svg"
+                        alt="Home"
+                    />
                 </a>
             </button>
             <button :class="currentSort.by == 'stars' ? 'active' : ''" @click="sort('stars')">
