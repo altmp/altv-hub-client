@@ -122,6 +122,7 @@ export default {
 
             this.resources = sortedResources;
             localStorage.setItem('resources', JSON.stringify(storageObject));
+            this.$root.$emit('resourcesChanged');
         },
         onScroll() {
             if (window.innerHeight + window.pageYOffset >= document.body.scrollHeight) {
