@@ -72,12 +72,11 @@ export default {
             return sortedResources;
         },
         paginatedResources() {
-            if (this.formattedResources.length === 0) return [];
-
             let chunkedResources = this.array_chunk(this.formattedResources, this.perPage);
             let resources = [];
 
             for (let page = 0; page <= this.currentPage; page++) {
+                if (!chunkedResources[page]) continue;
                 resources = resources.concat(chunkedResources[page]);
             }
 
