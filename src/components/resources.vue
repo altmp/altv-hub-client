@@ -76,7 +76,7 @@ export default {
             let resources = [];
 
             for (let page = 0; page <= this.currentPage; page++) {
-                if (!chunkedResources[page]) continue;
+                if (chunkedResources[page] == undefined) continue;
                 resources = resources.concat(chunkedResources[page]);
             }
 
@@ -131,6 +131,7 @@ export default {
 
                 if (this.currentPage > chunkedResources.length - 1) {
                     this.currentPage = chunkedResources.length - 1;
+                    if (this.currentPage < 0) this.currentPage = 0;
                 }
             }
         }
