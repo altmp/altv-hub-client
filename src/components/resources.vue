@@ -72,12 +72,11 @@ export default {
             return sortedResources;
         },
         paginatedResources() {
-            if (this.formattedResources.length === 0) return [];
-
             let chunkedResources = this.array_chunk(this.formattedResources, this.perPage);
             let resources = [];
 
             for (let page = 0; page <= this.currentPage; page++) {
+                if (chunkedResources[page] == undefined) continue;
                 resources = resources.concat(chunkedResources[page]);
             }
 
@@ -123,6 +122,7 @@ export default {
 
             this.resources = sortedResources;
             localStorage.setItem('resources', JSON.stringify(storageObject));
+            this.$root.$emit('resourcesChanged');
         },
         onScroll() {
             if (window.innerHeight + window.pageYOffset >= document.body.scrollHeight) {
@@ -131,6 +131,7 @@ export default {
 
                 if (this.currentPage > chunkedResources.length - 1) {
                     this.currentPage = chunkedResources.length - 1;
+                    if (this.currentPage < 0) this.currentPage = 0;
                 }
             }
         }

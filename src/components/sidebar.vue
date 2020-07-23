@@ -1,5 +1,5 @@
 <template>
-    <div class="sidebar">
+    <div v-show="resources.length > 0" class="sidebar">
         <a
             :href="'/?q=' + tag"
             v-for="[tag, count] in Object.entries(tagList)"
@@ -16,7 +16,18 @@ export default {
         };
     },
     mounted() {
-        this.resources = JSON.parse(localStorage.getItem('resources')).resources;
+        this.getResources();
+        this.$root.$on('resourcesChanged', this.getResources);
+    },
+    destroyed() {
+        this.$root.off('resources', this.getResources);
+    },
+    methods: {
+        getResources() {
+            const storage = JSON.parse(localStorage.getItem('resources'));
+
+            this.resources = storage !== null ? storage.resources : [];
+        }
     },
     computed: {
         tagList() {
