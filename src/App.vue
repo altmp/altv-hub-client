@@ -3,14 +3,7 @@
         <navigation></navigation>
         <div class="container">
             <sidebar></sidebar>
-
             <router-view />
-        </div>
-        <div class="controls">
-            <div class="postControls">
-                <button @click="tutorialPost">How To Post?</button>
-                <button @click="postResource">Post Resource</button>
-            </div>
         </div>
     </div>
 </template>
@@ -25,21 +18,13 @@ export default {
     name: 'app',
     components: {
         Navigation,
-        Sidebar
+        Sidebar,
     },
     data() {
         return {
             postResourceUrl: `https://github.com/altmp/altv-hub/pulls`,
-            postTutorialUrl: `https://www.youtube.com/watch?v=g2HTRdir6qo`
+            postTutorialUrl: `https://www.youtube.com/watch?v=g2HTRdir6qo`,
         };
     },
-    methods: {
-        postResource() {
-            window.open(this.postResourceUrl);
-        },
-        tutorialPost() {
-            window.open(this.postTutorialUrl);
-        }
-    }
 };
 </script>

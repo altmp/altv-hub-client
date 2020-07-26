@@ -9,7 +9,7 @@
                     <div class="tags">{{ formatTags(resource.tags) }}</div>
                 </div>
                 <div class="starInfo">
-                    <div class="stars">{{ resource.stars }}</div>
+                    <div class="stars">{{ !resource.stars ? 0 : resource.stars }}</div>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         height="24"
@@ -67,12 +67,12 @@ export default {
             // show only 6? tags
             return tags
                 .slice(0, 6)
-                .map(_tag => `#${_tag}`)
+                .map((_tag) => `#${_tag}`)
                 .join(' ');
-        }
+        },
     },
     mounted() {
         this.trimAuthor();
-    }
+    },
 };
 </script>

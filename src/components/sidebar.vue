@@ -1,10 +1,19 @@
 <template>
     <div v-show="resources.length > 0" class="sidebar">
+        <div class="totalContainer">
+            <div class="label">Total Resources:</div>
+            <div class="label">{{ resources.length }}</div>
+        </div>
         <a
-            :href="'/?q=' + tag"
+            @click="setSearch(tag)"
             v-for="[tag, count] in Object.entries(tagList)"
             :key="tag"
-        >{{ `${tag} (${count})` }}</a>
+            class="tagContainer"
+        >
+            <div class="tagName">{{ tag }}</div>
+            <div class="tagCount">{{ count }}</div>
+        </a>
+        <button class="toTop" @click="toTheTop()">Scroll to Top</button>
     </div>
 </template>
 
@@ -12,38 +21,50 @@
 export default {
     data() {
         return {
-            resources: []
+            resources: [],
         };
     },
     mounted() {
-        this.getResources();
-        this.$root.$on('resourcesChanged', this.getResources);
+        this.$root.$on('resources:Set', this.setResources);
     },
     destroyed() {
-        this.$root.off('resources', this.getResources);
+        this.$root.off('resources:Set', this.setResources);
     },
     methods: {
-        getResources() {
-            const storage = JSON.parse(localStorage.getItem('resources'));
-
-            this.resources = storage !== null ? storage.resources : [];
-        }
+        setResources(resources) {
+            this.resources = resources;
+        },
+        setSearch(tag) {
+            this.$root.$emit('search', tag);
+        },
+        toTheTop() {
+            this.$root.$emit('resources:ToTop');
+        },
     },
     computed: {
         tagList() {
-            const _tagList = {};
-            this.resources.forEach(_resource => {
-                _resource.tags.forEach(_tag => {
-                    if (_tag in _tagList) _tagList[_tag]++;
-                    else _tagList[_tag] = 1;
+            let _tagList = {};
+            this.resources.forEach((_resource) => {
+                _resource.tags.forEach((_tag) => {
+                    if (_tag in _tagList) {
+                        _tagList[_tag]++;
+                    } else {
+                        _tagList[_tag] = 1;
+                    }
                 });
             });
 
-            return _tagList;
-        }
-    }
+            const _tagListSorted = {};
+
+            let tags = Object.keys(_tagList);
+            tags = tags.sort();
+
+            tags.forEach((tag) => {
+                _tagListSorted[tag] = _tagList[tag];
+            });
+
+            return _tagListSorted;
+        },
+    },
 };
 </script>
-
-<style>
-</style>

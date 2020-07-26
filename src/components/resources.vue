@@ -1,5 +1,10 @@
 <template>
-    <div class="resources" v-if="paginatedResources.length >= 1">
+    <div
+        class="resources"
+        v-if="paginatedResources.length >= 1"
+        v-on:scroll.passive="onScroll"
+        ref="resources"
+    >
         <resource-card
             v-for="resource in paginatedResources"
             :key="resource.url"
@@ -25,22 +30,22 @@ export default {
             searchQuery: '',
             sort: {
                 by: 'stars',
-                asc: false
+                asc: false,
             },
-            repository: 'altmp/altv-hub/contents',
             resources: [],
             currentPage: 0,
-            perPage: 30
+            perPage: 30,
+            resourcesUrl: `https://raw.githubusercontent.com/altmp/altv-hub/master/dist/resources.json`,
         };
     },
     computed: {
         formattedResources() {
-            let filteredResources = this.resources.filter(resource => {
+            let filteredResources = this.resources.filter((resource) => {
                 const query = this.searchQuery.toLowerCase();
                 const _resource = {
                     title: resource.title.toLowerCase(),
                     author: resource.author.toLowerCase(),
-                    description: resource.description.toLowerCase()
+                    description: resource.description.toLowerCase(),
                 };
 
                 if (
@@ -53,23 +58,7 @@ export default {
                 }
             });
 
-            let sortedResources = filteredResources.sort((a, b) => {
-                if (this.sort.asc) {
-                    if (this.sort.by == 'updated') {
-                        return new Date(a[this.sort.by]) - new Date(b[this.sort.by]);
-                    } else {
-                        return a[this.sort.by] - b[this.sort.by];
-                    }
-                } else {
-                    if (this.sort.by == 'updated') {
-                        return new Date(b[this.sort.by]) - new Date(a[this.sort.by]);
-                    } else {
-                        return b[this.sort.by] - a[this.sort.by];
-                    }
-                }
-            });
-
-            return sortedResources;
+            return filteredResources;
         },
         paginatedResources() {
             let chunkedResources = this.array_chunk(this.formattedResources, this.perPage);
@@ -81,7 +70,7 @@ export default {
             }
 
             return resources;
-        }
+        },
     },
     methods: {
         array_chunk(array, items) {
@@ -89,27 +78,8 @@ export default {
                 array.slice(i * items, i * items + items)
             );
         },
-        async getResourceList() {
-            const data = await getRequest(
-                `https://raw.githubusercontent.com/altmp/altv-hub/master/dist/resources.json`
-            );
-            return data;
-        },
         async getResources() {
-            let resourcesData;
-
-            try {
-                resourcesData = JSON.parse(localStorage.getItem('resources'));
-            } catch (err) {
-                console.log(`No resources found... pulling data.`);
-            }
-
-            if (resourcesData && resourcesData.refreshTime && Date.now() < resourcesData.refreshTime) {
-                this.resources = resourcesData.resources;
-                return;
-            }
-
-            const resources = await this.getResourceList();
+            const resources = await getRequest(this.resourcesUrl);
             const sortedResources = resources.sort((a, b) => {
                 return b.stars - a.stars;
             });
@@ -117,15 +87,14 @@ export default {
             const refreshTime = Date.now() + 60000 * 5;
             const storageObject = {
                 refreshTime,
-                resources: sortedResources
+                resources: sortedResources,
             };
 
             this.resources = sortedResources;
-            localStorage.setItem('resources', JSON.stringify(storageObject));
-            this.$root.$emit('resourcesChanged');
+            this.$root.$emit('resources:Set', sortedResources);
         },
-        onScroll() {
-            if (window.innerHeight + window.pageYOffset >= document.body.scrollHeight) {
+        onScroll(e) {
+            if (e.target.scrollTop >= e.target.scrollHeight - 1500) {
                 this.currentPage = this.currentPage + 1;
                 let chunkedResources = this.array_chunk(this.formattedResources, this.perPage);
 
@@ -134,20 +103,32 @@ export default {
                     if (this.currentPage < 0) this.currentPage = 0;
                 }
             }
-        }
+        },
+        toTop() {
+            if (!this.$refs.resources || !this.$refs.resources.scrollTop) {
+                return;
+            }
+
+            const interval = setInterval(() => {
+                if (this.$refs.resources.scrollTop !== 0) {
+                    this.$refs.resources.scrollTop -= 1000;
+                }
+
+                if (this.$refs.resources.scrollTop <= 0) {
+                    this.$refs.resources.scrollTop = 0;
+                    clearInterval(interval);
+                }
+            }, 20);
+        },
     },
     mounted() {
-        window.addEventListener('scroll', this.onScroll);
-
-        this.$root.$on('search', query => {
+        this.$root.$on('search', (query) => {
             this.searchQuery = query;
         });
 
-        this.$root.$on('sort', sort => {
-            this.sort = sort;
-        });
+        this.$root.$on('resources:ToTop', this.toTop);
 
         this.getResources();
-    }
+    },
 };
 </script>
