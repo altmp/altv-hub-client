@@ -30,6 +30,8 @@ export default {
                 by: 'stars',
                 asc: false,
             },
+            postResourceUrl: `https://github.com/altmp/altv-hub/pulls`,
+            postTutorialUrl: `https://www.youtube.com/watch?v=g2HTRdir6qo`,
         };
     },
     methods: {
