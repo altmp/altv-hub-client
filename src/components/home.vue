@@ -10,13 +10,6 @@ export default {
     name: 'Home',
     components: {
         Resources
-    },
-    data() {
-        return {};
-    },
-    methods: {},
-    mounted() {
-        console.log('mounted');
     }
 };
 </script>

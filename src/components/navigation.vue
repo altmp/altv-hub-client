@@ -3,50 +3,16 @@
         <a class="logo" href="https://altv.mp/" target="_blank">
             <img src="../assets/logo.svg" />
         </a>
-        <input
-            type="text"
-            placeholder="Search for resources..."
-            v-model="searchInput"
-            @keydown="search"
-        />
+        <input type="text" placeholder="Search for resources..." v-model="searchInput" />
         <div class="buttons">
-            <button :class="currentSort.by == 'stars' ? 'active' : ''" @click="sort('stars')">
-                <svg
-                    version="1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 48 48"
-                    enable-background="new 0 0 48 48"
-                >
-                    <rect 
-                        v-for="(width, i) in arr = [6, 14, 22, 30, 38]"
-                        :key="width" 
-                        :y="currentSort.asc ? width : arr.reverse()[i]"
-                        :width="width - 2" 
-                        x="6" 
-                        fill="#FFFFFF" 
-                        height="4" 
-                    />
-                </svg>
-                Stars
+            <button class="button">
+                <a @click="setSearch('')" alt="Reset">Reset</a>
             </button>
-            <button :class="currentSort.by == 'updated' ? 'active' : ''" @click="sort('updated')">
-                <svg
-                    version="1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 48 48"
-                    enable-background="new 0 0 48 48"
-                >
-                    <rect 
-                        v-for="(width, i) in arr = [6, 14, 22, 30, 38]"
-                        :key="width" 
-                        :y="currentSort.asc ? width : arr.reverse()[i]"
-                        :width="width - 2" 
-                        x="6" 
-                        fill="#FFFFFF" 
-                        height="4" 
-                    />
-                </svg>
-                Date
+            <button class="button">
+                <a @click="tutorialPost" alt="How to Post">How to Post?</a>
+            </button>
+            <button class="button">
+                <a @click="postResource" alt="Post Resource">Post Resource</a>
             </button>
         </div>
     </div>
@@ -62,11 +28,12 @@ export default {
             activePath: 'home',
             currentSort: {
                 by: 'stars',
-                asc: false
-            }
+                asc: false,
+            },
+            postResourceUrl: `https://github.com/altmp/altv-hub/pulls`,
+            postTutorialUrl: `https://www.youtube.com/watch?v=g2HTRdir6qo`,
         };
     },
-    computed: {},
     methods: {
         isActive(name) {
             return this.activePath === name ? { active: true } : {};
@@ -75,23 +42,41 @@ export default {
             const id = e.target.id;
             this.activePath = id;
         },
+        setSearch(tag) {
+            this.searchInput = tag;
+        },
         search() {
             this.$root.$emit('search', this.searchInput);
         },
-        sort(by) {
-            if (this.currentSort.by == by) {
-                this.currentSort.asc = !this.currentSort.asc;
-            } else {
-                this.currentSort.by = by;
-            }
-
-            this.$root.$emit('sort', this.currentSort);
-        }
+        postResource() {
+            window.open(this.postResourceUrl);
+        },
+        tutorialPost() {
+            window.open(this.postTutorialUrl);
+        },
     },
     mounted() {
-        this.$on('router:SetLink', linkName => {
+        this.searchInput = this.$route.query.q || '';
+
+        this.$on('router:SetLink', (linkName) => {
             this.setLink({ id: linkName });
         });
-    }
+
+        this.$root.$on('search', this.setSearch);
+    },
+    watch: {
+        searchInput() {
+            this.search();
+
+            // we clear the query if input is clean too
+            const query =
+                this.searchInput.length !== 0
+                    ? Object.assign({}, this.$route.query, { q: this.searchInput })
+                    : Object.assign({}, {});
+
+            // it gives navigation duplication error when routing to the same query twice at initial load with search string included in the url
+            if (this.$route.query.q !== query.q) this.$router.push({ query });
+        },
+    },
 };
 </script>

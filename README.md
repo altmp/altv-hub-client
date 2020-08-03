@@ -1,10 +1,15 @@
-# alt:V Hub Client SPA
+![](https://i.imgur.com/td4HDR2.jpeg)
 
-Used to display resources from the [https://github.com/altmp/altv-hub](https://github.com/altmp/altv-hub) repository.
+# alt:V Hub Client (SPA)
+
+Used to display resources from the [https://github.com/altmp/altv-hub](https://github.com/altmp/altv-hub) repository. This is the main single page application for https://hub.altv.mp/
+
+This can be ran locally and has no issues with being ran locally.
 
 ## Project setup
 
 ```sh
+npm install -g @vue/cli
 npm install
 ```
 
@@ -19,29 +24,6 @@ npm run serve
 ```sh
 npm run build
 ```
-
-### Deploying for Github
-
-If any changes are made. You can redeploy by running the following locally.
-That or run the `deploy.sh` if you're on a Linux based machine.
-
-```sh
-npm run build
-
-# Copy CNAME to dist directory.
-
-cd dist
-
-git init
-
-git add -A
-
-git commit -m 'deploy'
-
-git push -f git@github.com:altmp/altv-hub-client.git master:gh-pages
-```
-
-Don't forget to go into settings and set the domain to https://hub.altv.mp/
 
 ### Customize configuration
 
