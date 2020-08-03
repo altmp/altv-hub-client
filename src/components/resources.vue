@@ -80,18 +80,14 @@ export default {
         },
         async getResources() {
             const resources = await getRequest(this.resourcesUrl);
-            const sortedResources = resources.sort((a, b) => {
-                return b.stars - a.stars;
-            });
-
             const refreshTime = Date.now() + 60000 * 5;
             const storageObject = {
                 refreshTime,
-                resources: sortedResources,
+                resources,
             };
 
-            this.resources = sortedResources;
-            this.$root.$emit('resources:Set', sortedResources);
+            this.resources = resources;
+            this.$root.$emit('resources:Set', resources);
         },
         onScroll(e) {
             if (e.target.scrollTop >= e.target.scrollHeight - 1500) {
@@ -111,7 +107,7 @@ export default {
 
             const interval = setInterval(() => {
                 if (this.$refs.resources.scrollTop !== 0) {
-                    this.$refs.resources.scrollTop -= 1000;
+                    this.$refs.resources.scrollTop -= 200;
                 }
 
                 if (this.$refs.resources.scrollTop <= 0) {
