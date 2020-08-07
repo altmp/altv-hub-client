@@ -4,6 +4,7 @@ import App from './App.vue';
 import './registerServiceWorker';
 import './assets/style.less'
 
+Vue.config.devtools = false;
 Vue.config.productionTip = false;
 
 new Vue({
