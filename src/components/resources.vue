@@ -55,7 +55,7 @@ export default {
                     _resource.title.includes(query) ||
                     _resource.author.includes(query) ||
                     _resource.description.includes(query) ||
-                    resource.tags.includes(query)
+                    resource.tags.filter(str => str.includes(query)).length >= 1
                 ) {
                     return resource;
                 }
