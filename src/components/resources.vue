@@ -11,6 +11,9 @@
             :resource="resource"
         />
     </div>
+    <div v-else-if="searchQuery && !paginatedResources.length" style="margin: 0 auto;">
+        <div style="margin: 40px auto;">No resources found for the specified query</div>
+    </div>
     <div v-else style="margin: 0 auto;">
         <div class="lds-heart">
             <div></div>
@@ -52,7 +55,7 @@ export default {
                     _resource.title.includes(query) ||
                     _resource.author.includes(query) ||
                     _resource.description.includes(query) ||
-                    resource.tags.includes(query)
+                    resource.tags.filter(str => str.includes(query)).length >= 1
                 ) {
                     return resource;
                 }
